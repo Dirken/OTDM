@@ -1,9 +1,9 @@
 clear;
 %
 tr_freq     = .5;
-tr_seed     = 123456;
+tr_seed     = 48103345;
 tr_p        = 250;
-te_seed     = 789101;
+te_seed     = 39958013;
 te_q        = tr_p;
 % Parameters for optimization:
 epsG = 10^-6; kmax = 5000;                                    % Stopping criterium:
