@@ -25,20 +25,18 @@ wo = wk(:,kmaxO);
 %Train accuracy
 y_calc = y(Xtr, wo);
 sum_tr = 0;
-tr_size = size(Xtr,1);
-for i = 1:tr_size
+for i = 1:tr_p
     sum_tr = sum_tr + (round(y_calc(i)) == ytr(i));
 end
-tr_acc = double(sum_tr*100/ tr_size);
+tr_acc = double(sum_tr*100/ tr_p);
 
 %Compute test accuracy
 y_calc = y(Xte, wo);
 sum_te = 0;
-te_size = size(Xte,1);
-for i = 1:te_size
+for i = 1:te_q
     sum_te = sum_te + (round(y_calc(i)) == yte(i));
 end
-te_acc = double(sum_te*100/ te_size);
+te_acc = double(sum_te*100/ te_q);
 tex=toc;
 
 end
