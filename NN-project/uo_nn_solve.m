@@ -13,27 +13,32 @@ L = @(w) norm(y(Xtr,w)-ytr)^2 + (la*norm(w)^2)/2;
 gL = @(w) 2*sig(Xtr)*((y(Xtr,w)-ytr).*y(Xtr,w).*(1-y(Xtr,w)))'+la*w;
 
 if isd == 1 %GM
-    [wk,dk,alk,iWk]=uo_GM(w,L,gL,eps,kmax,epsal,kmaxBLS,ialmax,c1,c2);  
+    [wk,niter]=uo_GM(w,L,gL,eps,kmax,epsal,kmaxBLS,ialmax,c1,c2);  
 %elseif isd == 2 %CGM-PR+
 
 elseif isd == 3 %QM-BFGS
-    [wK,dk,alk,Hk,iWk]=uo_QM_BFGS(w,f,g,eps,kmax,epsal,kmaxBLS,ialmax,c1,c2);
+    [wk,niter]=uo_QM_BFGS(w,L,gL,eps,kmax,epsal,kmaxBLS,ialmax,c1,c2);
 end
-niter=nu;
-kmaxo= size(wk,2);
-wo=wk(:,kmaxo);
-y_calculated = y(Xtr,wo);
-tr_size=size(Xtr,2);
-%Train Accuracy
-sum = sysum((round(y_calculated(1i)) == ytr(1i)),1i,1,tr_size);
-tr_acc= sum/tr_size;
+kmaxO = size(wk,2);
+wo = wk(:,kmaxO);
 
+%Train accuracy
+y_calc = y(Xtr, wo);
+sum_tr = 0;
+tr_size = size(Xtr,1);
+for i = 1:tr_size
+    sum_tr = sum_tr + (round(y_calc(i)) == ytr(i));
+end
+tr_acc = double(sum_tr*100/ tr_size);
 
-y_calculated2 = y(Xte,wo);
-te_size=size(Xte,2);
-%Test Accuracy
-sum2 = sysum((round(y_calculated2(1i)) == yte(1i)),1i,1,te_size);
-te_acc= sum2/te_size;
+%Compute test accuracy
+y_calc = y(Xte, wo);
+sum_te = 0;
+te_size = size(Xte,1);
+for i = 1:te_size
+    sum_te = sum_te + (round(y_calc(i)) == yte(i));
+end
+te_acc = double(sum_te*100/ te_size);
 tex=toc;
 
 end
