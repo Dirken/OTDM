@@ -25,14 +25,14 @@ wo=wk(:,kmaxo);
 y_calculated = y(Xtr,wo);
 tr_size=size(Xtr,2);
 %Train Accuracy
-sum = sysum((round(y_calculated(1i)) == ytr(1i)),1i,1,tr_size);
+sum = sysum((round(y_calculated(i)) == ytr(i)),i,1,tr_size);
 tr_acc= sum/tr_size;
 
 
 y_calculated2 = y(Xte,wo);
 te_size=size(Xte,2);
 %Test Accuracy
-sum2 = sysum((round(y_calculated2(1i)) == yte(1i)),1i,1,te_size);
+sum2 = sysum((round(y_calculated2(1i)) == ytr(1i)),1i,1,te_size);
 te_acc= sum2/te_size;
 tex=toc;
 

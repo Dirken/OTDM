@@ -14,7 +14,7 @@ while norm(g(w)) > eps && k < kmax
        almax = 2*(f(wk(:,k)) - f(wk(:,k-1)))/(g(wk(:,k))'*d);
    end
    %New BLS based on interpolations
-   [al, iWout] = om_uo_BLSNW32(f, g, w, d, almax, c1, c2, kmaxBLS, epsBLS); 
+   [al, iWout] = uo_BLSNW32(f, g, w, d, almax, c1, c2, kmaxBLS, epsBLS); 
    
    %Update the variables
    w = w + al*d;
