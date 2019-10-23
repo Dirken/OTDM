@@ -3,9 +3,9 @@ function [wk,niter]=uo_QM_BFGS(w,f,g,eps,kmax,epsBLS,kmaxBLS,almax,c1,c2)
 I = eye(length(w));
 k = 1; %iterator
 wk = [w];
-w_prev = 0; %value of previous w
+w_prev = -1; %value of previous w
 
-while norm(g(w)) > eps && k < kmax
+while norm(g(w)) > eps && k < kmax && ~ isequal(g(w),g(w_prev))
     
     if k == 1
         H = I;
