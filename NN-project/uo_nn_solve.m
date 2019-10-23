@@ -3,7 +3,6 @@ tic
 te_freq = 0;
 [Xtr,ytr]=uo_nn_dataset(tr_seed,tr_p,num_target,tr_freq);
 [Xte,yte]=uo_nn_dataset(te_seed,te_q,num_target,te_freq);
-la=0;
 w=zeros(35,1);
 
 sig = @(X) 1./(1+exp(-X)); %activation function (sigmoid function)
