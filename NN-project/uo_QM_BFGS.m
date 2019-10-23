@@ -5,7 +5,7 @@ k = 1; %iterator
 wk = [w];
 w_prev = -1; %value of previous w
 
-while norm(g(w)) > epsG && k < kmax && ~ isequal(g(w),g(w_prev))
+while norm(g(w)) > epsG && k < kmax 
     
     if k == 1
         H = I;

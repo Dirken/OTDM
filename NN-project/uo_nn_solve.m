@@ -21,6 +21,7 @@ end
 kmaxO = size(wk,2);
 wo = wk(:,kmaxO);
 %uo_nn_Xyplot(Xtr,ytr,wo);
+
 %Train accuracy
 y_calc = y(Xtr, wo);
 sum_tr = 0;
@@ -30,7 +31,9 @@ end
 tr_acc = double(sum_tr*100/ tr_p);
 
 %Compute test accuracy
-%uo_nn_Xyplot(Xte,yte,wo);
+if num_target == 9 && la == 1.0 && isd == 3
+    uo_nn_Xyplot(Xte,yte,wo);
+end
 y_calc = y(Xte, wo);
 sum_te = 0;
 for i = 1:te_q

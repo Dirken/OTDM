@@ -44,4 +44,12 @@ dataset_la1_bfgs <- dataset_la1[dataset_la1$isd == 3,]
 plot(dataset_la1_g$niter)
 plot(dataset_la1_bfgs$niter)
 
+plot(dataset_la1_g$tex)
+plot(dataset_la1_bfgs$tex)
+
+dataset_la1_g$texniter <- dataset_la1_g$tex/dataset_la1_g$niter
+dataset_la1_bfgs$texniter <- dataset_la1_bfgs$tex/dataset_la1_bfgs$niter
+
+plot(dataset_la1_g$texniter)
+plot(dataset_la1_bfgs$texniter)
 #idk
