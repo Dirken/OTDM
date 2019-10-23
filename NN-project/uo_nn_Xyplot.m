@@ -9,7 +9,7 @@ iwo=1; if size(wo,1)==0, wo=zeros(35,1); iwo=0; end
 %
 posi = 1;
 posf = size(Xds,2);
-iplot = 0;
+iplot = 1;
 %
 % iplot : = 0 -> plot every position
 %       : = 1 -> plot only wrong recognitions.

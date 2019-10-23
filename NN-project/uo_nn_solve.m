@@ -12,15 +12,15 @@ L = @(w) norm(y(Xtr,w)-ytr)^2 + (la*norm(w)^2)/2;
 gL = @(w) 2*sig(Xtr)*((y(Xtr,w)-ytr).*y(Xtr,w).*(1-y(Xtr,w)))'+la*w;
 
 if isd == 1 %GM
-    [wk,niter]=uo_GM(w,L,gL,eps,kmax,epsal,kmaxBLS,ialmax,c1,c2);  
+    [wk,niter]=uo_GM(w,L,gL,epsG,kmax,epsal,kmaxBLS,ialmax,c1,c2);  
 %elseif isd == 2 %CGM-PR+
 
 elseif isd == 3 %QM-BFGS
-    [wk,niter]=uo_QM_BFGS(w,L,gL,eps,kmax,epsal,kmaxBLS,ialmax,c1,c2);
+    [wk,niter]=uo_QM_BFGS(w,L,gL,epsG,kmax,epsal,kmaxBLS,ialmax,c1,c2);
 end
 kmaxO = size(wk,2);
 wo = wk(:,kmaxO);
-
+%uo_nn_Xyplot(Xtr,ytr,wo);
 %Train accuracy
 y_calc = y(Xtr, wo);
 sum_tr = 0;
@@ -30,6 +30,7 @@ end
 tr_acc = double(sum_tr*100/ tr_p);
 
 %Compute test accuracy
+%uo_nn_Xyplot(Xte,yte,wo);
 y_calc = y(Xte, wo);
 sum_te = 0;
 for i = 1:te_q

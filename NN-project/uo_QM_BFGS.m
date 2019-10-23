@@ -1,11 +1,11 @@
-function [wk,niter]=uo_QM_BFGS(w,f,g,eps,kmax,epsBLS,kmaxBLS,almax,c1,c2)
+function [wk,niter]=uo_QM_BFGS(w,f,g,epsG,kmax,epsal,kmaxBLS,almax,c1,c2)
 
 I = eye(length(w));
 k = 1; %iterator
 wk = [w];
 w_prev = -1; %value of previous w
 
-while norm(g(w)) > eps && k < kmax && ~ isequal(g(w),g(w_prev))
+while norm(g(w)) > epsG && k < kmax && ~ isequal(g(w),g(w_prev))
     
     if k == 1
         H = I;
@@ -19,7 +19,7 @@ while norm(g(w)) > eps && k < kmax && ~ isequal(g(w),g(w_prev))
     if k ~= 1
         almax = 2*(f(wk(:,k)) - f(wk(:,k-1)))/(g(wk(:,k))'*d);
     end
-    [al, ~] = uo_BLSNW32(f, g, w, d, almax, c1, c2, kmaxBLS, epsBLS);
+    [al, ~] = uo_BLSNW32(f, g, w, d, almax, c1, c2, kmaxBLS, epsal);
     
     %Update variables
     w_prev = w;
