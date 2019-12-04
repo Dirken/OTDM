@@ -12,5 +12,5 @@ for{i in 1..numPoints} {
 	for{j in 1..numVars} {
 		let x[i,j] := train[i,j];	
 	}
-	let d[i] := train[i,numVars+1];
+	let y[i] := train[i,numVars+1];
 } 
