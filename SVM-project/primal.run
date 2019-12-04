@@ -7,12 +7,9 @@ data 'data.dat';
 
 option solver cplex;
 solve;
-
-display w;
-display s;
-display gamma;
-
 #idk why doesn't work
-#display w > 'ouput/primal/w.txt';
-#display s > 'ouput/primal/s.txt';
-#display gamma > 'ouput/primal/gamma.txt';
+
+
+display w > 'output/primal/w.txt';
+display s > 'output/primal/s.txt';
+display gamma > 'output/primal/gamma.txt';

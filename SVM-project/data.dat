@@ -1,6 +1,6 @@
 data;
 
-param numPoints := 50;    
+param numPoints := 100;    
 param numVars := 4; 
 param dimensions := 5;
 param nu := 256;
