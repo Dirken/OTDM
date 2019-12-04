@@ -1,0 +1,18 @@
+reset;
+
+cd('C:/Users/Meyerhofer/Desktop/UNI/OTDM/SVM-project/');
+model 'primal.mod';
+data 'data.dat';
+#display nu;
+
+option solver cplex;
+solve;
+
+display w;
+display s;
+display gamma;
+
+#idk why doesn't work
+#display w > 'ouput/primal/w.txt';
+#display s > 'ouput/primal/s.txt';
+#display gamma > 'ouput/primal/gamma.txt';

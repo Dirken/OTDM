@@ -1,0 +1,17 @@
+reset;
+
+cd('C:/Users/Meyerhofer/Desktop/UNI/OTDM/SVM-project/');
+model 'dual.mod';
+data 'data.dat';
+#display nu;
+
+for {i in 1..numPoints} {
+	for {j in 1..numPoints} {
+		let K[i,j] := sum {k in 1..numVars} x[i,k] * x[j,k];
+	}
+}
+
+option solver cplex;
+solve;
+
+display lambda > 'output/dual/lambda.txt';

@@ -1,0 +1,16 @@
+data;
+
+param numPoints := 50;    
+param numVars := 4; 
+param dimensions := 5;
+param nu := 256;
+
+
+read {m in 1..numPoints, n in 1..dimensions} train[m,n] < "data/train100-seed54321.dat";
+
+for{i in 1..numPoints} {
+	for{j in 1..numVars} {
+		let x[i,j] := train[i,j];	
+	}
+	let d[i] := train[i,numVars+1];
+} 
