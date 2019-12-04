@@ -17,4 +17,4 @@ minimize obj_function:
 	(1/2) * sum{n in 1..numVars} w[n]^2 + nu*sum{m in 1..numPoints} s[m];
 	
 subject to Constraint1 {m in 1..numPoints}:
-	y[m]*((sum{n in 1..numVars} w[n]*x[m,n]) - gamma) + s[m] >= 1;          # m constraints
+	y[m]*((sum{n in 1..numVars} w[n]*x[m,n]) + gamma) + s[m] >= 1;          # m constraints
