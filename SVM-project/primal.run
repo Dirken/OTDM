@@ -9,7 +9,7 @@ option solver cplex;
 solve;
 
 display w;
-display s;
+#display s;
 display gamma;
 
 

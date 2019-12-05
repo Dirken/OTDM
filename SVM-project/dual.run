@@ -5,13 +5,26 @@ model 'dual.mod';
 data 'data.dat';
 #display nu;
 
-for {i in 1..numPoints} {
-	for {j in 1..numPoints} {
-		let K[i,j] := sum {k in 1..numVars} x[i,k] * x[j,k];
-	}
-}
-
 option solver cplex;
 solve;
 
+var w{i in 1..numVars};
+var gamma;
+
+for{i in 1..numVars} {
+	let w[i] := sum{j in 1..numPoints}lambda[j]*y[j]*x[j,i];
+}
+
+for{i in 1..numPoints} { 
+	if lambda[i]>0 && lambda[i] < nu then 
+		{ let gamma :=  (1/y[i]) - (sum{j in 1..numVars} w[j]*x[i,j])};
+}
+
+
+display w;
+display gamma;
+#display lambda;
+
+#display w > 'ouput/dual/w.txt';
+#display gamma > 'output/dual/gamma.txt';
 display lambda > 'output/dual/lambda.txt';
