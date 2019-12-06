@@ -1,0 +1,56 @@
+----------------------------------------
+nu= 0.03125
+Train accuracy= 0.53
+Test accuracy= 0.51
+----------------------------------------
+nu= 0.0625
+Train accuracy= 0.61
+Test accuracy= 0.585
+----------------------------------------
+nu= 0.125
+Train accuracy= 0.82
+Test accuracy= 0.785
+----------------------------------------
+nu= 0.25
+Train accuracy= 0.92
+Test accuracy= 0.875
+----------------------------------------
+nu= 0.5
+Train accuracy= 0.94
+Test accuracy= 0.905
+----------------------------------------
+nu= 1
+Train accuracy= 0.92
+Test accuracy= 0.915
+----------------------------------------
+nu= 2
+Train accuracy= 0.94
+Test accuracy= 0.91
+----------------------------------------
+nu= 4
+Train accuracy= 0.94
+Test accuracy= 0.93
+----------------------------------------
+nu= 8
+Train accuracy= 0.93
+Test accuracy= 0.9
+----------------------------------------
+nu= 16
+Train accuracy= 0.92
+Test accuracy= 0.905
+----------------------------------------
+nu= 32
+Train accuracy= 0.92
+Test accuracy= 0.91
+----------------------------------------
+nu= 64
+Train accuracy= 0.93
+Test accuracy= 0.91
+----------------------------------------
+nu= 128
+Train accuracy= 0.93
+Test accuracy= 0.91
+----------------------------------------
+nu= 256
+Train accuracy= 0.93
+Test accuracy= 0.91
