@@ -16,7 +16,7 @@ for{i in 1..numVars} {
 }
 
 for{i in 1..numPoints} { 
-	if lambda[i]>0 && lambda[i] < nu then 
+	if lambda[i]>=0.0001 && lambda[i] <= nu then 
 		{ let gamma :=  (1/y[i]) - (sum{j in 1..numVars} w[j]*x[i,j])};
 }
 
@@ -24,7 +24,19 @@ for{i in 1..numPoints} {
 display w;
 display gamma;
 #display lambda;
-
 #display w > 'ouput/dual/w.txt';
 #display gamma > 'output/dual/gamma.txt';
 display lambda > 'output/dual/lambda.txt';
+
+
+var results {i in 1..numPoints} = if (sum {j in 1..numVars} w[j] * x[i,j] + gamma >= 0) then 1 else -1;
+
+var correct;
+for{k in 1..numPoints} {
+	if results[k] == y[k] then
+		{ let correct := correct + 1;}
+}
+
+display results;
+
+display correct/numPoints;

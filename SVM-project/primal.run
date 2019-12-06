@@ -16,3 +16,16 @@ display gamma;
 display w > 'output/primal/w.txt';
 display s > 'output/primal/s.txt';
 display gamma > 'output/primal/gamma.txt';
+
+
+var results {i in 1..numPoints} = if (sum {j in 1..numVars} w[j] * x[i,j] + gamma >= 0) then 1 else -1;
+
+var correct;
+for{k in 1..numPoints} {
+	if results[k] == y[k] then
+		{ let correct := correct + 1;}
+}
+
+display results;
+
+display correct/numPoints;
