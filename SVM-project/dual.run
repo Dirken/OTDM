@@ -9,15 +9,20 @@ option solver cplex;
 solve;
 
 var w{i in 1..numVars};
-var gamma;
 
 for{i in 1..numVars} {
 	let w[i] := sum{j in 1..numPoints}lambda[j]*y[j]*x[j,i];
 }
 
+var gamma;
+
 for{i in 1..numPoints} { 
-	if lambda[i]>=0.0001 && lambda[i] <= nu then 
-		{ let gamma :=  (1/y[i]) - (sum{j in 1..numVars} w[j]*x[i,j])};
+	if lambda[i]>=0.0001 && (lambda[i] + 0.1) < nu then 
+		{ let gamma :=  (1/y[i]) - (sum{j in 1..numVars} w[j]*x[i,j]);
+		#display i;
+		#display gamma;
+		};
+			
 }
 
 
@@ -37,6 +42,37 @@ for{k in 1..numPoints} {
 		{ let correct := correct + 1;}
 }
 
-display results;
-
+#display results;
 display correct/numPoints;
+
+
+
+#validation, we use same w's and gamma. we change x,y's
+
+param numPoints_test = 200;    
+
+
+var test{m in 1..numPoints_test, n in 1..dimensions};
+var x_test{m in 1..numPoints_test, n in 1..numVars};
+var y_test{m in 1..numPoints_test};
+
+read {m in 1..numPoints_test, n in 1..dimensions} test[m,n] < "data/train200-seed12345.dat";
+
+for{i in 1..numPoints_test} {
+	for{j in 1..numVars} {
+		let x_test[i,j] := test[i,j];	
+	}
+	let y_test[i] := test[i,numVars+1];
+} 
+
+var results_test {i in 1..numPoints_test} = if (sum {j in 1..numVars} w[j] * x_test[i,j] + gamma >= 0) then 1 else -1;
+
+var correct_test;
+for{k in 1..numPoints_test} {
+	if results_test[k] == y_test[k] then
+		{ let correct_test := correct_test + 1;}
+}
+
+
+#display results_test;
+display correct_test/numPoints_test;

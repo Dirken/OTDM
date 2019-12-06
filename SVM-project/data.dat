@@ -1,12 +1,12 @@
 data;
 
-param numPoints := 250;    
+param numPoints := 100;    
 param numVars := 4; 
 param dimensions := 5;
-param nu := 1000;
+param nu := 100;
 
 
-read {m in 1..numPoints, n in 1..dimensions} train[m,n] < "data/train.dat";
+read {m in 1..numPoints, n in 1..dimensions} train[m,n] < "data/train100-seed54321.dat";
 
 for{i in 1..numPoints} {
 	for{j in 1..numVars} {
