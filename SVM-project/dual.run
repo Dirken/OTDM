@@ -5,7 +5,7 @@ model 'dual.mod';
 data 'data.dat';
 #display nu;
 
-option solver cplex;
+option solver "ampl_mswin64/cplex";
 solve;
 
 var w{i in 1..numVars};
@@ -17,7 +17,7 @@ for{i in 1..numVars} {
 var gamma;
 
 for{i in 1..numPoints} { 
-	if lambda[i]>=0.0001 && (lambda[i] + 0.1) < nu then 
+	if lambda[i]>=0.0001 && (lambda[i] + 0.0001) < nu then 
 		{ let gamma :=  (1/y[i]) - (sum{j in 1..numVars} w[j]*x[i,j]);
 		#display i;
 		#display gamma;
@@ -26,11 +26,11 @@ for{i in 1..numPoints} {
 }
 
 
-display w;
-display gamma;
+#display w;
+#display gamma;
 #display lambda;
-#display w > 'ouput/dual/w.txt';
-#display gamma > 'output/dual/gamma.txt';
+display w > 'output/dual/w.txt';
+display gamma > 'output/dual/gamma.txt';
 display lambda > 'output/dual/lambda.txt';
 
 
@@ -45,7 +45,7 @@ for{k in 1..numPoints} {
 #display results;
 display correct/numPoints;
 
-
+display correct/numPoints > 'output/dual/acc_train.txt';
 
 #validation, we use same w's and gamma. we change x,y's
 
@@ -75,4 +75,5 @@ for{k in 1..numPoints_test} {
 
 
 #display results_test;
-display correct_test/numPoints_test;
+#display correct_test/numPoints_test;
+display correct_test/numPoints_test > 'output/dual/acc_test.txt';

@@ -15,3 +15,6 @@ maximize obj_function:
 	
 subject to Contraint1:
 	sum{m in 1..numPoints} lambda[m]*y[m] = 0;
+
+	
+	

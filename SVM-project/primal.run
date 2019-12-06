@@ -5,12 +5,12 @@ model 'primal.mod';
 data 'data.dat';
 #display nu;
 
-option solver cplex;
+option solver "ampl_mswin64/cplex";
 solve;
 
-display w;
+#display w;
 #display s;
-display gamma;
+#display gamma;
 
 
 display w > 'output/primal/w.txt';
@@ -29,7 +29,7 @@ for{k in 1..numPoints} {
 #display results;
 display correct/numPoints;
 
-
+display correct/numPoints > 'output/primal/acc_train.txt';
 
 #validation, we use same w's and gamma. we change x,y's
 
@@ -59,4 +59,5 @@ for{k in 1..numPoints_test} {
 
 
 #display results_test;
-display correct_test/numPoints_test;
+display correct_test/numPoints_test > 'output/primal/acc_test.txt';
+#display correct_test/numPoints_test;

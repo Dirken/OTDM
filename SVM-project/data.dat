@@ -3,7 +3,7 @@ data;
 param numPoints := 100;    
 param numVars := 4; 
 param dimensions := 5;
-param nu := 100;
+read nu < "data/nu.txt";
 
 
 read {m in 1..numPoints, n in 1..dimensions} train[m,n] < "data/train100-seed54321.dat";
