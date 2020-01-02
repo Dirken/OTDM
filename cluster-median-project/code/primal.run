@@ -1,0 +1,21 @@
+reset;
+
+cd('C:/Users/Meyerhofer/Desktop/UNI/OTDM/cluster-median-project/');
+model 'code/primal.mod';
+data 'code/data.dat';
+#display nu;
+
+option solver "ampl_mswin64/cplex";
+solve;
+
+display x > 'data/outputs/x.txt';
+
+var total{i in 1..m};
+
+for{i in 1..m} {
+	for{j in 1..m}{
+		let total[i] := total[i] + x[j,i];
+	}
+} 
+
+display total > 'data/outputs/total.txt';
