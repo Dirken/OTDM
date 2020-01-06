@@ -4,6 +4,8 @@ import numpy as np
 import networkx as nx
 from networkx import Graph
 import matplotlib.pyplot as plt
+from scipy.spatial import distance
+import time
 
 def takeDistance(element):
 	return element[2]
@@ -103,14 +105,17 @@ class PrintGraph(Graph):
         self.fh.write("Clear graph\n")
 
 def main():
-	#read d and a
+	start_time = time.time()
+	#Reads d and a
 	d = np.loadtxt("../data/inputs/D2.txt")
+	a = np.loadtxt("../data/inputs/A2.txt")
 	vertex = 214
+	numClusters = 6
 	T = set()
 	S = set()
 	
-	S.add(0)
-	#print(S)
+	#Prims algorithm:
+	S.add(106)
 	while len(S) != vertex:
 		edges = set()
 		minEdge = [99999,99999,99999]
@@ -124,33 +129,42 @@ def main():
 
 		T.add((minEdge[0], minEdge[1], minEdge[2]))
 		S.add(minEdge[1])
-
-	print(sorted(T, reverse = True, key=takeDistance))
-	sortedEdges = sorted(T, reverse = True, key=takeDistance)[6:]
-	#print(sortedEdges)
+	#we drop the k-1 first elements which will lead to disconnect the graph into clusters:
+	sortedEdges = sorted(T, reverse = True, key=takeDistance)[(numClusters-1):]  
 	
-	G = PrintGraph()
+	#we create a graph containing x-y-dist
+	G = Graph()
 	for i in range(vertex):
 		G.add_node(i)
 	for i in sortedEdges:
 		G.add_edge(i[0], i[1], weight=i[2])
 
 	clusters = nx.connected_components(G)
-	for c in nx.connected_components(G):
+
+	#we calculate per each cluster the centroids
+	iterator = 0
+	medians = []
+	for c in clusters:
 		print(c)
+		xs = []
+		ys = []
+		for i in c:
+			xs.append(a[i][0])
+			ys.append(a[i][1])
+		medians.append([np.median(xs),np.median(ys)])
+		iterator +=1 
+	
+	iterator = 0
+	objectiveFunction = 0
+	for c in nx.connected_components(G):
+		for i in c:
+			objectiveFunction += distance.euclidean(medians[iterator], [a[i][0], a[i][1]])
+		iterator +=1 
 
-	#colors = range(20)
-	#nx.draw(G, pos, node_color='#A0CBE2', edge_color=colors,
-    #    width=4, edge_cmap=plt.cm.Blues, with_labels=False)
-	#
-	#
-	#nx.draw(G)
-	#plt.show()
-
-
-
-
-
+	print("Objective function: ")
+	print(objectiveFunction)
+	end_time = time.time()
+	print(end_time-start_time)
 
 	
 if __name__ == '__main__':

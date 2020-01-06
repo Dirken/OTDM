@@ -1,5 +1,4 @@
 reset;
-
 cd('C:/Users/Meyerhofer/Desktop/UNI/OTDM/cluster-median-project/');
 model 'code/primal.mod';
 data 'code/data.dat';
@@ -19,3 +18,4 @@ for{i in 1..m} {
 } 
 
 display total > 'data/outputs/total.txt';
+display _total_solve_elapsed_time;
