@@ -5,6 +5,8 @@ import networkx as nx
 from networkx import Graph
 import matplotlib.pyplot as plt
 from scipy.spatial import distance
+from scipy.spatial.distance import pdist
+from scipy.spatial.distance import squareform
 import time
 
 def takeDistance(element):
@@ -104,6 +106,68 @@ class PrintGraph(Graph):
         Graph.clear(self)
         self.fh.write("Clear graph\n")
 
+def kMedoids(D, k, tmax=100):
+    # determine dimensions of distance matrix D
+    m, n = D.shape
+
+    if k > n:
+        raise Exception('too many medoids')
+
+    # find a set of valid initial cluster medoid indices since we
+    # can't seed different clusters with two points at the same location
+    valid_medoid_inds = set(range(n))
+    invalid_medoid_inds = set([])
+    rs,cs = np.where(D==0)
+    # the rows, cols must be shuffled because we will keep the first duplicate below
+    index_shuf = list(range(len(rs)))
+    np.random.shuffle(index_shuf)
+    rs = rs[index_shuf]
+    cs = cs[index_shuf]
+    for r,c in zip(rs,cs):
+        # if there are two points with a distance of 0...
+        # keep the first one for cluster init
+        if r < c and r not in invalid_medoid_inds:
+            invalid_medoid_inds.add(c)
+    valid_medoid_inds = list(valid_medoid_inds - invalid_medoid_inds)
+
+    if k > len(valid_medoid_inds):
+        raise Exception('too many medoids (after removing {} duplicate points)'.format(
+            len(invalid_medoid_inds)))
+
+    # randomly initialize an array of k medoid indices
+    M = np.array(valid_medoid_inds)
+    np.random.shuffle(M)
+    M = np.sort(M[:k])
+
+    # create a copy of the array of medoid indices
+    Mnew = np.copy(M)
+
+    # initialize a dictionary to represent clusters
+    C = {}
+    for t in xrange(tmax):
+        # determine clusters, i. e. arrays of data indices
+        J = np.argmin(D[:,M], axis=1)
+        for kappa in range(k):
+            C[kappa] = np.where(J==kappa)[0]
+        # update cluster medoids
+        for kappa in range(k):
+            J = np.mean(D[np.ix_(C[kappa],C[kappa])],axis=1)
+            j = np.argmin(J)
+            Mnew[kappa] = C[kappa][j]
+        np.sort(Mnew)
+        # check for convergence
+        if np.array_equal(M, Mnew):
+            break
+        M = np.copy(Mnew)
+    else:
+        # final update of cluster memberships
+        J = np.argmin(D[:,M], axis=1)
+        for kappa in range(k):
+            C[kappa] = np.where(J==kappa)[0]
+
+    # return results
+    return M, C
+
 def main():
 	start_time = time.time()
 	#Reads d and a
@@ -115,7 +179,7 @@ def main():
 	S = set()
 	
 	#Prims algorithm:
-	S.add(106)
+	S.add(0)
 	while len(S) != vertex:
 		edges = set()
 		minEdge = [99999,99999,99999]
@@ -141,28 +205,32 @@ def main():
 
 	clusters = nx.connected_components(G)
 
-	#we calculate per each cluster the centroids
+	#we calculate per each cluster the obj function
 	iterator = 0
-	medians = []
-	for c in clusters:
-		print(c)
-		xs = []
-		ys = []
-		for i in c:
-			xs.append(a[i][0])
-			ys.append(a[i][1])
-		medians.append([np.median(xs),np.median(ys)])
-		iterator +=1 
-	
-	iterator = 0
+	medoids = []
 	objectiveFunction = 0
-	for c in nx.connected_components(G):
+	for c in clusters:
+		points = []
+		distancesMatrix = []
 		for i in c:
-			objectiveFunction += distance.euclidean(medians[iterator], [a[i][0], a[i][1]])
+			#Agafa les dades del cluster
+			points.append([a[i][0], a[i][1]])
+		#calcules la matriu de distancies D
+		distancesMatrix = squareform(pdist(np.array(points), 'euclidean'))
+		#print("---------------------------")
+		#print(distancesMatrix)
+		#calcules la suma per columnes de la matriu
+		sumaColumna =  np.sum(distancesMatrix, axis=0)
+		print(sumaColumna)
+		#el medoide es el arg min d'aquest vector de sumes
+		medoid = np.min(sumaColumna)
+		print(medoid)
+		#el obj value es la suma d'aquests valors
+		objectiveFunction = objectiveFunction + medoid
 		iterator +=1 
 
-	print("Objective function: ")
-	print(objectiveFunction)
+	
+
 	end_time = time.time()
 	print(end_time-start_time)
 
