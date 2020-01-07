@@ -4,9 +4,10 @@ import numpy as np
 import networkx as nx
 from networkx import Graph
 import matplotlib.pyplot as plt
-from scipy.spatial import distance
+from scipy.spatial import distance_matrix
 from scipy.spatial.distance import pdist
 from scipy.spatial.distance import squareform
+
 import time
 
 def takeDistance(element):
@@ -109,9 +110,9 @@ class PrintGraph(Graph):
 def main():
 	start_time = time.time()
 	#Reads d and a
-	d = np.loadtxt("../data/inputs/D2.txt")
-	a = np.loadtxt("../data/inputs/A2.txt")
-	vertex = 214
+	d = np.loadtxt("../data/inputs/D3.txt")
+	a = np.loadtxt("../data/inputs/A3.txt")
+	vertex = 500
 	numClusters = 6
 	T = set()
 	S = set()
@@ -132,7 +133,7 @@ def main():
 		T.add((minEdge[0], minEdge[1], minEdge[2]))
 		S.add(minEdge[1])
 	#we drop the k-1 first elements which will lead to disconnect the graph into clusters:
-	sortedEdges = sorted(T, reverse = True, key=takeDistance)[(numClusters-1):]  
+	sortedEdges = sorted(T, reverse = False, key=takeDistance)[0:(vertex-numClusters)]  
 	
 	#we create a graph containing x-y-dist
 	G = Graph()
@@ -148,26 +149,31 @@ def main():
 	medoids = []
 	objectiveFunction = 0
 	for c in clusters:
+		print(c)
 		points = []
 		distancesMatrix = []
 		for i in c:
 			#Agafa les dades del cluster
 			points.append([a[i][0], a[i][1]])
 		#calcules la matriu de distancies D
-		distancesMatrix = squareform(pdist(np.array(points), 'euclidean'))
-		#print("---------------------------")
-		#print(distancesMatrix)
-		#calcules la suma per columnes de la matriu
-		sumaColumna =  np.sum(distancesMatrix, axis=0)
-		print(sumaColumna)
-		#el medoide es el arg min d'aquest vector de sumes
-		medoid = np.min(sumaColumna)
-		print(medoid)
+		mean = np.mean(points,axis=0)
+
+		distancesMatrix = distance_matrix([mean],np.array(points))
+		print(distancesMatrix)
+		minValue = np.array(distancesMatrix[0]).argmin()
 		#el obj value es la suma d'aquests valors
-		objectiveFunction = objectiveFunction + medoid
+		connectedComponentsList = list(c)
+		#print(connectedComponentsList)
+		for i in c:
+			objectiveFunction += d[connectedComponentsList[minValue]][i]
+
 		iterator +=1 
 
+       
+	print(objectiveFunction)
 	
+
+
 
 	end_time = time.time()
 	print(end_time-start_time)

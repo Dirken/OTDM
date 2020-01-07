@@ -2,7 +2,6 @@ reset;
 cd('C:/Users/Meyerhofer/Desktop/UNI/OTDM/cluster-median-project/');
 model 'code/primal.mod';
 data 'code/data.dat';
-#display nu;
 
 option solver "ampl_mswin64/cplex";
 solve;
